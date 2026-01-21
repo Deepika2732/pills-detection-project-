@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      pill_detections: {
+        Row: {
+          confidence: number
+          created_at: string
+          description: string | null
+          detected_at: string
+          dosage: string | null
+          id: string
+          image_url: string | null
+          manufacturer: string | null
+          pill_name: string
+          warnings: string[] | null
+        }
+        Insert: {
+          confidence: number
+          created_at?: string
+          description?: string | null
+          detected_at?: string
+          dosage?: string | null
+          id?: string
+          image_url?: string | null
+          manufacturer?: string | null
+          pill_name: string
+          warnings?: string[] | null
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          description?: string | null
+          detected_at?: string
+          dosage?: string | null
+          id?: string
+          image_url?: string | null
+          manufacturer?: string | null
+          pill_name?: string
+          warnings?: string[] | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

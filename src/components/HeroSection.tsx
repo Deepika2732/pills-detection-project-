@@ -1,12 +1,27 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Zap, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import heroPillsImage from "@/assets/hero-pills.jpg";
 
 const HeroSection = () => {
+  const scrollToUpload = () => {
+    document.getElementById("upload")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src={heroPillsImage} 
+          alt="Medical pills background" 
+          className="w-full h-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+      </div>
+
+      {/* Floating Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary/10 blur-3xl animate-float" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-accent/10 blur-3xl animate-float" style={{ animationDelay: "-3s" }} />
       </div>
@@ -22,7 +37,7 @@ const HeroSection = () => {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
               <Brain className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Deep Learning Powered</span>
+              <span className="text-sm font-medium text-primary">AI-Powered Deep Learning</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
@@ -33,7 +48,7 @@ const HeroSection = () => {
 
             <p className="text-lg text-muted-foreground max-w-lg">
               An innovative deep learning-based pill detection system with intelligent 
-              medicinal drug identification capabilities. Powered by MobileNet architecture 
+              medicinal drug identification capabilities. Powered by advanced AI models 
               for accurate real-time recognition.
             </p>
 
@@ -41,11 +56,17 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 className="gradient-hero text-primary-foreground hover:opacity-90 shadow-glow group"
+                onClick={scrollToUpload}
               >
                 Start Detection
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="border-primary/30 hover:bg-primary/5">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-primary/30 hover:bg-primary/5"
+                onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+              >
                 Learn More
               </Button>
             </div>
@@ -100,7 +121,7 @@ const HeroSection = () => {
                     </div>
                     <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10">
                       <Brain className="h-4 w-4 text-primary" />
-                      <span className="text-sm text-primary font-medium">MobileNet</span>
+                      <span className="text-sm text-primary font-medium">Deep Learning</span>
                     </div>
                   </div>
                 </div>
