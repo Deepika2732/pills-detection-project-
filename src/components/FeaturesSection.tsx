@@ -1,16 +1,16 @@
 import { motion } from "framer-motion";
-import { Brain, Zap, Shield, Database, Eye, Code } from "lucide-react";
+import { Brain, Zap, Shield, Database, Eye, Cloud } from "lucide-react";
 
 const features = [
   {
     icon: Brain,
-    title: "MobileNet Architecture",
-    description: "Powered by state-of-the-art MobileNet deep learning model for accurate pill classification and identification.",
+    title: "AI Deep Learning",
+    description: "Powered by advanced AI models using Lovable AI gateway for accurate pill classification and identification.",
   },
   {
     icon: Zap,
     title: "Real-time Detection",
-    description: "Lightning-fast analysis with results in under 2 seconds. Upload and get instant identification.",
+    description: "Lightning-fast analysis with results in under 2 seconds. Upload and get instant identification with live updates.",
   },
   {
     icon: Eye,
@@ -20,7 +20,7 @@ const features = [
   {
     icon: Database,
     title: "Extensive Database",
-    description: "Access to over 1000+ medication records with detailed drug information, dosages, and manufacturer data.",
+    description: "Access to medication records with detailed drug information, dosages, and manufacturer data stored in real-time database.",
   },
   {
     icon: Shield,
@@ -28,9 +28,9 @@ const features = [
     description: "Comprehensive drug interaction warnings and safety information to prevent medication errors.",
   },
   {
-    icon: Code,
-    title: "Flask Backend",
-    description: "Robust Python Flask framework with REST API for seamless integration with healthcare systems.",
+    icon: Cloud,
+    title: "Cloud Backend",
+    description: "Built on Lovable Cloud with edge functions, database, and realtime subscriptions for scalable performance.",
   },
 ];
 
@@ -49,7 +49,7 @@ const FeaturesSection = () => {
             Powerful Features
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Our pill detection system leverages cutting-edge machine learning 
+            Our pill detection system leverages cutting-edge AI 
             technology to provide accurate and reliable medication identification.
           </p>
         </motion.div>

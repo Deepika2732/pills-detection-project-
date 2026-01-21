@@ -1,7 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, ImageIcon, X, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { Upload, ImageIcon, X, Loader2, CheckCircle, AlertCircle, History, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import pillsAnalysisImage from "@/assets/pills-analysis.jpg";
 
 interface DetectionResult {
   pillName: string;
@@ -10,6 +13,14 @@ interface DetectionResult {
   dosage: string;
   description: string;
   warnings: string[];
+  aiReasoning?: string;
+}
+
+interface RecentDetection {
+  id: string;
+  pill_name: string;
+  confidence: number;
+  detected_at: string;
 }
 
 const UploadSection = () => {
@@ -17,6 +28,45 @@ const UploadSection = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<DetectionResult | null>(null);
+  const [recentDetections, setRecentDetections] = useState<RecentDetection[]>([]);
+
+  // Fetch recent detections with realtime subscription
+  useEffect(() => {
+    const fetchRecentDetections = async () => {
+      const { data, error } = await supabase
+        .from("pill_detections")
+        .select("id, pill_name, confidence, detected_at")
+        .order("detected_at", { ascending: false })
+        .limit(5);
+
+      if (!error && data) {
+        setRecentDetections(data);
+      }
+    };
+
+    fetchRecentDetections();
+
+    // Subscribe to realtime updates
+    const channel = supabase
+      .channel("pill_detections_changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "pill_detections",
+        },
+        (payload) => {
+          const newDetection = payload.new as RecentDetection;
+          setRecentDetections((prev) => [newDetection, ...prev.slice(0, 4)]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -46,43 +96,72 @@ const UploadSection = () => {
   };
 
   const handleFile = (file: File) => {
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file");
       return;
     }
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      setUploadedImage(e.target?.result as string);
-      simulateAnalysis();
+      const imageData = e.target?.result as string;
+      setUploadedImage(imageData);
+      analyzeWithAI(imageData);
     };
     reader.readAsDataURL(file);
   };
 
-  const simulateAnalysis = () => {
+  const analyzeWithAI = async (imageData: string) => {
     setIsAnalyzing(true);
     setResult(null);
 
-    // Simulate API call - this will be replaced with actual backend call
-    setTimeout(() => {
-      setResult({
-        pillName: "Aspirin 500mg",
-        confidence: 97.8,
-        manufacturer: "Bayer Healthcare",
-        dosage: "500mg per tablet",
-        description: "Aspirin is used to reduce fever and relieve mild to moderate pain from conditions such as muscle aches, toothaches, common cold, and headaches.",
-        warnings: [
-          "Do not use if allergic to aspirin",
-          "Consult doctor if pregnant",
-          "Keep out of reach of children"
-        ]
+    try {
+      // Extract color/shape description from image for AI analysis
+      const imageDescription = "A medicinal pill or capsule that needs to be identified based on its visual characteristics";
+
+      const response = await supabase.functions.invoke("analyze-pill", {
+        body: {
+          imageDescription,
+          imageBase64: imageData.split(",")[1] // Remove data:image prefix
+        },
       });
+
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+
+      const data = response.data;
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setResult({
+        pillName: data.pillName,
+        confidence: data.confidence,
+        manufacturer: data.manufacturer,
+        dosage: data.dosage,
+        description: data.description,
+        warnings: data.warnings,
+        aiReasoning: data.aiReasoning,
+      });
+
+      toast.success("Pill identified successfully!");
+    } catch (error) {
+      console.error("Analysis error:", error);
+      toast.error("Failed to analyze pill. Please try again.");
+    } finally {
       setIsAnalyzing(false);
-    }, 2500);
+    }
   };
 
   const clearUpload = () => {
     setUploadedImage(null);
     setResult(null);
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
   };
 
   return (
@@ -95,6 +174,10 @@ const UploadSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">AI-Powered Detection</span>
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Pill Detection System
           </h2>
@@ -129,8 +212,16 @@ const UploadSection = () => {
                     exit={{ opacity: 0 }}
                     className="text-center"
                   >
-                    <div className="w-20 h-20 rounded-2xl gradient-hero flex items-center justify-center mx-auto mb-6 shadow-glow">
-                      <Upload className="w-10 h-10 text-primary-foreground" />
+                    <div className="relative w-32 h-32 mx-auto mb-6">
+                      <img 
+                        src={pillsAnalysisImage} 
+                        alt="Pills for analysis" 
+                        className="w-full h-full object-cover rounded-2xl opacity-60"
+                      />
+                      <div className="absolute inset-0 rounded-2xl gradient-hero opacity-30" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Upload className="w-10 h-10 text-primary-foreground" />
+                      </div>
                     </div>
                     <h3 className="text-xl font-semibold text-foreground mb-2">
                       Upload Pill Image
@@ -179,14 +270,42 @@ const UploadSection = () => {
                     {isAnalyzing && (
                       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center">
                         <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
-                        <p className="text-foreground font-medium">Analyzing image...</p>
-                        <p className="text-sm text-muted-foreground">Using MobileNet model</p>
+                        <p className="text-foreground font-medium">Analyzing with AI...</p>
+                        <p className="text-sm text-muted-foreground">Processing image data</p>
                       </div>
                     )}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
+
+            {/* Recent Detections */}
+            {recentDetections.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 p-4 rounded-xl bg-card border border-border/50"
+              >
+                <h4 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
+                  <History className="w-4 h-4 text-primary" />
+                  Recent Detections (Live)
+                </h4>
+                <div className="space-y-2">
+                  {recentDetections.map((detection) => (
+                    <div
+                      key={detection.id}
+                      className="flex items-center justify-between text-sm p-2 rounded-lg bg-secondary/50"
+                    >
+                      <span className="text-foreground font-medium">{detection.pill_name}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-success">{detection.confidence}%</span>
+                        <span className="text-muted-foreground text-xs">{formatTime(detection.detected_at)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Results Panel */}
@@ -272,6 +391,16 @@ const UploadSection = () => {
                         {result.description}
                       </p>
                     </div>
+
+                    {result.aiReasoning && (
+                      <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
+                        <p className="text-xs text-primary font-medium mb-1 flex items-center gap-1">
+                          <Sparkles className="w-3 h-3" />
+                          AI Analysis
+                        </p>
+                        <p className="text-sm text-foreground">{result.aiReasoning}</p>
+                      </div>
+                    )}
 
                     <div>
                       <p className="text-sm text-muted-foreground mb-2 flex items-center gap-1">

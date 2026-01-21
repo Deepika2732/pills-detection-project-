@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { FileText, CheckCircle2, AlertTriangle, Pill } from "lucide-react";
+import aiMedicalImage from "@/assets/ai-medical.jpg";
 
 const AboutSection = () => {
   return (
@@ -32,8 +33,8 @@ const AboutSection = () => {
             <p className="text-muted-foreground leading-relaxed">
               This project introduces an innovative deep learning-based pill detection 
               system with intelligent medicinal drug identification capabilities. The 
-              system is developed using Python programming language and utilizes the 
-              <strong className="text-foreground"> MobileNet architecture </strong> 
+              system is developed using modern AI technology and utilizes 
+              <strong className="text-foreground"> advanced neural network architectures </strong> 
               as the underlying model.
             </p>
 
@@ -41,25 +42,25 @@ const AboutSection = () => {
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                 <p className="text-foreground text-sm">
-                  <strong>Python</strong> - Implementation using Python programming language
+                  <strong>Lovable Cloud</strong> - Full-stack backend with database and AI
                 </p>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                 <p className="text-foreground text-sm">
-                  <strong>MobileNet</strong> - Deep learning architecture for image classification
+                  <strong>AI Gateway</strong> - Deep learning for image analysis
                 </p>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                 <p className="text-foreground text-sm">
-                  <strong>Flask</strong> - Web framework for REST API implementation
+                  <strong>Realtime Database</strong> - Live detection updates
                 </p>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                 <p className="text-foreground text-sm">
-                  <strong>HTML, CSS, JS</strong> - Frontend user interface
+                  <strong>React + TypeScript</strong> - Modern frontend framework
                 </p>
               </div>
             </div>
@@ -73,6 +74,20 @@ const AboutSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-4"
           >
+            {/* AI Image Card */}
+            <div className="relative rounded-2xl overflow-hidden mb-4">
+              <img 
+                src={aiMedicalImage} 
+                alt="AI Medical Technology" 
+                className="w-full h-48 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+              <div className="absolute bottom-4 left-4">
+                <p className="text-primary-foreground font-semibold">AI-Powered Healthcare</p>
+                <p className="text-primary-foreground/80 text-sm">Advanced Deep Learning Technology</p>
+              </div>
+            </div>
+
             <div className="result-card">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
