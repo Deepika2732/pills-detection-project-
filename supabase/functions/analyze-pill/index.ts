@@ -102,6 +102,18 @@ const pillDatabase = [
     dosage: "20mg per capsule",
     description: "Omeprazole is a proton pump inhibitor used to treat gastroesophageal reflux disease (GERD), stomach ulcers, and conditions involving excessive stomach acid production.",
     warnings: ["Take before meals", "Long-term use may affect bone health", "May interact with certain medications", "Consult doctor for prolonged use"]
+  },
+  {
+    keywords: ["orange", "amber", "softgel", "soft gelatin", "oval", "oblong", "translucent", "vitamin d", "d3", "cholecalciferol", "60000", "60k"],
+    pillName: "Vitamin D3 60,000 IU",
+    genericName: "Cholecalciferol (Vitamin D3)",
+    drugClass: "Vitamin D Analogue / Nutritional Supplement",
+    size: "Medium (15mm)",
+    shape: "Oval/Oblong Soft Gelatin Capsule (Softgel)",
+    manufacturer: "Various (Generic)",
+    dosage: "60,000 IU (International Units) per capsule",
+    description: "A translucent orange or amber softgel containing an oily liquid (as Vitamin D is fat-soluble). Used for treatment of Vitamin D deficiency, osteoporosis prevention, calcium absorption support, and immune system support.",
+    warnings: ["High doses (60k IU) are usually taken ONCE A WEEK, not daily - daily intake can lead to toxicity", "Excess intake can cause hypercalcemia (high calcium levels in blood), leading to kidney stones or heart issues", "Consult a doctor before taking high doses during pregnancy", "Store in a cool, dry place away from sunlight"]
   }
 ];
 
@@ -138,7 +150,7 @@ Deno.serve(async (req) => {
             ${JSON.stringify(pillDatabase.map(p => ({ name: p.pillName, keywords: p.keywords })))}
             
             Respond with a JSON object containing:
-            - matchedPillIndex: the index (0-7) of the matched pill, or -1 if no match
+            - matchedPillIndex: the index (0-8) of the matched pill, or -1 if no match
             - confidence: a percentage between 75-99 indicating match confidence
             - reasoning: brief explanation of why this pill was matched
             
@@ -160,7 +172,7 @@ Deno.serve(async (req) => {
                 properties: {
                   matchedPillIndex: { 
                     type: "number",
-                    description: "Index of matched pill (0-7) or -1 if no match"
+                    description: "Index of matched pill (0-8) or -1 if no match"
                   },
                   confidence: { 
                     type: "number",
