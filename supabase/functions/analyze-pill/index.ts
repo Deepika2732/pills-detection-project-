@@ -114,6 +114,18 @@ const pillDatabase = [
     dosage: "60,000 IU (International Units) per capsule",
     description: "A translucent orange or amber softgel containing an oily liquid (as Vitamin D is fat-soluble). Used for treatment of Vitamin D deficiency, osteoporosis prevention, calcium absorption support, and immune system support.",
     warnings: ["High doses (60k IU) are usually taken ONCE A WEEK, not daily - daily intake can lead to toxicity", "Excess intake can cause hypercalcemia (high calcium levels in blood), leading to kidney stones or heart issues", "Consult a doctor before taking high doses during pregnancy", "Store in a cool, dry place away from sunlight"]
+  },
+  {
+    keywords: ["pink", "oval", "small", "alprazolam", "alprax", "xanax", "anxiety", "benzodiazepine", "0.5"],
+    pillName: "Alprazolam 0.5mg",
+    genericName: "Alprazolam",
+    drugClass: "Benzodiazepine (Sedative/Anxiolytic)",
+    size: "Small (6mm)",
+    shape: "Small Oval Pink Tablet",
+    manufacturer: "Various (Alprax, Xanax)",
+    dosage: "0.5mg per tablet",
+    description: "Alprazolam is a benzodiazepine used to treat anxiety disorders, panic disorders, and sometimes short-term sleep issues caused by anxiety. It works by enhancing the effect of GABA in the brain.",
+    warnings: ["HABIT FORMING: High potential for addiction - do not use longer than 2-4 weeks", "Causes drowsiness and dizziness - do not drive or operate machinery", "NEVER stop suddenly - can cause seizures or severe anxiety - dose must be reduced gradually", "STRICTLY AVOID ALCOHOL - combination can be fatal", "Prescription required - controlled substance"]
   }
 ];
 
@@ -150,7 +162,7 @@ Deno.serve(async (req) => {
             ${JSON.stringify(pillDatabase.map(p => ({ name: p.pillName, keywords: p.keywords })))}
             
             Respond with a JSON object containing:
-            - matchedPillIndex: the index (0-8) of the matched pill, or -1 if no match
+            - matchedPillIndex: the index (0-9) of the matched pill, or -1 if no match
             - confidence: a percentage between 75-99 indicating match confidence
             - reasoning: brief explanation of why this pill was matched
             
@@ -172,7 +184,7 @@ Deno.serve(async (req) => {
                 properties: {
                   matchedPillIndex: { 
                     type: "number",
-                    description: "Index of matched pill (0-8) or -1 if no match"
+                    description: "Index of matched pill (0-9) or -1 if no match"
                   },
                   confidence: { 
                     type: "number",
