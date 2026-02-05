@@ -11,6 +11,10 @@ const pillDatabase = [
   {
     keywords: ["white", "round", "small", "aspirin", "bayer"],
     pillName: "Aspirin 325mg",
+    genericName: "Acetylsalicylic Acid",
+    drugClass: "Nonsteroidal Anti-inflammatory Drug (NSAID)",
+    size: "Small (6mm)",
+    shape: "Round",
     manufacturer: "Bayer Healthcare",
     dosage: "325mg per tablet",
     description: "Aspirin is a nonsteroidal anti-inflammatory drug (NSAID) used to reduce fever and relieve mild to moderate pain from conditions such as muscle aches, toothaches, common cold, and headaches. It also reduces inflammation.",
@@ -19,6 +23,10 @@ const pillDatabase = [
   {
     keywords: ["blue", "oval", "viagra", "sildenafil", "erectile"],
     pillName: "Sildenafil 100mg",
+    genericName: "Sildenafil Citrate",
+    drugClass: "Phosphodiesterase-5 (PDE5) Inhibitor",
+    size: "Medium (11mm)",
+    shape: "Oval/Diamond",
     manufacturer: "Pfizer Inc.",
     dosage: "100mg per tablet",
     description: "Sildenafil is used to treat erectile dysfunction and pulmonary arterial hypertension. It works by relaxing muscles and increasing blood flow to particular areas of the body.",
@@ -27,6 +35,10 @@ const pillDatabase = [
   {
     keywords: ["red", "capsule", "ibuprofen", "advil", "motrin"],
     pillName: "Ibuprofen 400mg",
+    genericName: "Ibuprofen",
+    drugClass: "Nonsteroidal Anti-inflammatory Drug (NSAID)",
+    size: "Medium (15mm)",
+    shape: "Capsule",
     manufacturer: "Johnson & Johnson",
     dosage: "400mg per capsule",
     description: "Ibuprofen is a nonsteroidal anti-inflammatory drug used to reduce fever, pain, and inflammation from conditions like arthritis, menstrual cramps, headaches, and minor injuries.",
@@ -35,6 +47,10 @@ const pillDatabase = [
   {
     keywords: ["yellow", "round", "vitamin", "supplement", "multivitamin"],
     pillName: "Vitamin C 500mg",
+    genericName: "Ascorbic Acid",
+    drugClass: "Vitamin/Dietary Supplement",
+    size: "Large (18mm)",
+    shape: "Round",
     manufacturer: "Nature Made",
     dosage: "500mg per tablet",
     description: "Vitamin C is an essential nutrient that helps maintain the immune system, aids in collagen production, and acts as an antioxidant. It supports overall health and wellness.",
@@ -43,6 +59,10 @@ const pillDatabase = [
   {
     keywords: ["pink", "oblong", "paracetamol", "acetaminophen", "tylenol"],
     pillName: "Acetaminophen 500mg",
+    genericName: "Paracetamol",
+    drugClass: "Analgesic/Antipyretic",
+    size: "Medium (16mm)",
+    shape: "Oblong/Caplet",
     manufacturer: "McNeil Consumer Healthcare",
     dosage: "500mg per tablet",
     description: "Acetaminophen is a pain reliever and fever reducer used to treat headaches, muscle aches, arthritis, backaches, toothaches, colds, and fevers.",
@@ -51,6 +71,10 @@ const pillDatabase = [
   {
     keywords: ["orange", "capsule", "antibiotic", "amoxicillin"],
     pillName: "Amoxicillin 500mg",
+    genericName: "Amoxicillin Trihydrate",
+    drugClass: "Penicillin-type Antibiotic",
+    size: "Large (21mm)",
+    shape: "Capsule",
     manufacturer: "GlaxoSmithKline",
     dosage: "500mg per capsule",
     description: "Amoxicillin is a penicillin-type antibiotic used to treat bacterial infections including ear infections, bronchitis, pneumonia, and urinary tract infections.",
@@ -59,6 +83,10 @@ const pillDatabase = [
   {
     keywords: ["white", "oblong", "metformin", "diabetes", "glucophage"],
     pillName: "Metformin 500mg",
+    genericName: "Metformin Hydrochloride",
+    drugClass: "Biguanide Antidiabetic",
+    size: "Medium (15mm)",
+    shape: "Oblong",
     manufacturer: "Bristol-Myers Squibb",
     dosage: "500mg per tablet",
     description: "Metformin is used to treat type 2 diabetes by helping control blood sugar levels. It works by decreasing glucose production in the liver and improving insulin sensitivity.",
@@ -67,6 +95,10 @@ const pillDatabase = [
   {
     keywords: ["blue", "round", "omeprazole", "prilosec", "stomach"],
     pillName: "Omeprazole 20mg",
+    genericName: "Omeprazole Magnesium",
+    drugClass: "Proton Pump Inhibitor (PPI)",
+    size: "Small (8mm)",
+    shape: "Round",
     manufacturer: "AstraZeneca",
     dosage: "20mg per capsule",
     description: "Omeprazole is a proton pump inhibitor used to treat gastroesophageal reflux disease (GERD), stomach ulcers, and conditions involving excessive stomach acid production.",
@@ -193,6 +225,10 @@ serve(async (req) => {
 
     const result = {
       pillName: matchedPill.pillName,
+      genericName: matchedPill.genericName,
+      drugClass: matchedPill.drugClass,
+      size: matchedPill.size,
+      shape: matchedPill.shape,
       confidence: Math.min(99, Math.max(75, confidence)),
       manufacturer: matchedPill.manufacturer,
       dosage: matchedPill.dosage,
@@ -210,6 +246,10 @@ serve(async (req) => {
       .from("pill_detections")
       .insert({
         pill_name: result.pillName,
+        generic_name: result.genericName,
+        drug_class: result.drugClass,
+        size: result.size,
+        shape: result.shape,
         confidence: result.confidence,
         manufacturer: result.manufacturer,
         dosage: result.dosage,
