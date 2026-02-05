@@ -21,10 +21,14 @@ export type Database = {
           description: string | null
           detected_at: string
           dosage: string | null
+          drug_class: string | null
+          generic_name: string | null
           id: string
           image_url: string | null
           manufacturer: string | null
           pill_name: string
+          shape: string | null
+          size: string | null
           warnings: string[] | null
         }
         Insert: {
@@ -33,10 +37,14 @@ export type Database = {
           description?: string | null
           detected_at?: string
           dosage?: string | null
+          drug_class?: string | null
+          generic_name?: string | null
           id?: string
           image_url?: string | null
           manufacturer?: string | null
           pill_name: string
+          shape?: string | null
+          size?: string | null
           warnings?: string[] | null
         }
         Update: {
@@ -45,10 +53,14 @@ export type Database = {
           description?: string | null
           detected_at?: string
           dosage?: string | null
+          drug_class?: string | null
+          generic_name?: string | null
           id?: string
           image_url?: string | null
           manufacturer?: string | null
           pill_name?: string
+          shape?: string | null
+          size?: string | null
           warnings?: string[] | null
         }
         Relationships: []

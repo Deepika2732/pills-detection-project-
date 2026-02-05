@@ -8,6 +8,10 @@ import pillsAnalysisImage from "@/assets/pills-analysis.jpg";
 
 interface DetectionResult {
   pillName: string;
+  genericName: string;
+  drugClass: string;
+  size: string;
+  shape: string;
   confidence: number;
   manufacturer: string;
   dosage: string;
@@ -137,6 +141,10 @@ const UploadSection = () => {
 
       setResult({
         pillName: data.pillName,
+        genericName: data.genericName,
+        drugClass: data.drugClass,
+        size: data.size,
+        shape: data.shape,
         confidence: data.confidence,
         manufacturer: data.manufacturer,
         dosage: data.dosage,
@@ -375,6 +383,22 @@ const UploadSection = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3 rounded-lg bg-secondary/50">
+                        <p className="text-xs text-muted-foreground mb-1">Generic Name</p>
+                        <p className="text-sm font-medium text-foreground">{result.genericName}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-secondary/50">
+                        <p className="text-xs text-muted-foreground mb-1">Drug Class</p>
+                        <p className="text-sm font-medium text-foreground">{result.drugClass}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-secondary/50">
+                        <p className="text-xs text-muted-foreground mb-1">Size</p>
+                        <p className="text-sm font-medium text-foreground">{result.size}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-secondary/50">
+                        <p className="text-xs text-muted-foreground mb-1">Shape</p>
+                        <p className="text-sm font-medium text-foreground">{result.shape}</p>
+                      </div>
                       <div className="p-3 rounded-lg bg-secondary/50">
                         <p className="text-xs text-muted-foreground mb-1">Manufacturer</p>
                         <p className="text-sm font-medium text-foreground">{result.manufacturer}</p>
