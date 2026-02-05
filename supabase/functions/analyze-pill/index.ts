@@ -138,6 +138,30 @@ const pillDatabase = [
     dosage: "Varies - Check packaging",
     description: "White shield or triangular-shaped tablets. Could be: (1) TRIPTAN (Rizact/Sumatriptan) - stops migraine headache that has already started, relieves pain, nausea, light sensitivity. OR (2) LAMOTRIGINE (Lamitor) - prevents seizures (epilepsy) or stabilizes mood in bipolar disorder. CHECK THE LABEL on the back to identify.",
     warnings: ["CHECK THE LABEL: These drugs do opposite things - one stops headaches, one prevents seizures", "HEART RISK (if Triptan): Constricts blood vessels - NOT for people with heart disease or high blood pressure", "SKIN RASH (if Lamotrigine): Can cause rare but severe Stevens-Johnson Syndrome - stop immediately if rash develops", "Prescription required for both medications"]
+  },
+  {
+    keywords: ["white", "round", "kal", "cal", "500", "calcium", "shelcal", "cipcal", "bone", "supplement", "vitamin d3"],
+    pillName: "Calcium 500mg + Vitamin D3",
+    genericName: "Calcium Carbonate + Vitamin D3",
+    drugClass: "Nutritional Supplement / Mineral",
+    size: "Medium (12mm)",
+    shape: "Round White Tablet",
+    manufacturer: "Various (KAL 500, Shelcal 500, Cipcal 500)",
+    dosage: "500mg elemental calcium, taken once or twice daily after food",
+    description: "Round white tablet often marked 'KAL' or 'CAL' + '500'. Used for bone health, treating calcium deficiency, osteoporosis (weak bones), strengthening teeth, and joint stiffness or fractures.",
+    warnings: ["KIDNEY STONES: Do not take if you have a history of kidney stones", "STOMACH: Take with food to avoid acidity or gas", "Do not exceed recommended daily dose", "Consult doctor if taking other medications"]
+  },
+  {
+    keywords: ["white", "round", "calpol", "kalpol", "dolo", "paracetamol", "acetaminophen", "fever", "pain", "500"],
+    pillName: "Paracetamol 500mg",
+    genericName: "Paracetamol (Acetaminophen)",
+    drugClass: "Analgesic (Painkiller) & Antipyretic (Fever Reducer)",
+    size: "Medium (12mm)",
+    shape: "Round or Capsule-shaped White Tablet",
+    manufacturer: "Various (Calpol 500, Kalpol 500, Dolo 500)",
+    dosage: "500mg per tablet, taken every 4-6 hours as needed",
+    description: "Round or capsule-shaped white tablet for fever reduction and pain relief. Relieves headache, muscle ache, toothache, and body pain. Reduces high body temperature.",
+    warnings: ["OVERDOSE DANGER: Taking more than 4000mg/day can cause severe liver damage", "Wait at least 4 hours between doses", "Check other medications for paracetamol content to avoid double-dosing", "Avoid alcohol while taking this medication"]
   }
 ];
 
@@ -174,7 +198,7 @@ Deno.serve(async (req) => {
             ${JSON.stringify(pillDatabase.map(p => ({ name: p.pillName, keywords: p.keywords })))}
             
             Respond with a JSON object containing:
-            - matchedPillIndex: the index (0-10) of the matched pill, or -1 if no match
+            - matchedPillIndex: the index (0-12) of the matched pill, or -1 if no match
             - confidence: a percentage between 75-99 indicating match confidence
             - reasoning: brief explanation of why this pill was matched
             
@@ -196,7 +220,7 @@ Deno.serve(async (req) => {
                 properties: {
                   matchedPillIndex: { 
                     type: "number",
-                    description: "Index of matched pill (0-10) or -1 if no match"
+                    description: "Index of matched pill (0-12) or -1 if no match"
                   },
                   confidence: { 
                     type: "number",
