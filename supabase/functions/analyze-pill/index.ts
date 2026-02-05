@@ -126,6 +126,18 @@ const pillDatabase = [
     dosage: "0.5mg per tablet",
     description: "Alprazolam is a benzodiazepine used to treat anxiety disorders, panic disorders, and sometimes short-term sleep issues caused by anxiety. It works by enhancing the effect of GABA in the brain.",
     warnings: ["HABIT FORMING: High potential for addiction - do not use longer than 2-4 weeks", "Causes drowsiness and dizziness - do not drive or operate machinery", "NEVER stop suddenly - can cause seizures or severe anxiety - dose must be reduced gradually", "STRICTLY AVOID ALCOHOL - combination can be fatal", "Prescription required - controlled substance"]
+  },
+  {
+    keywords: ["white", "triangular", "shield", "triangle", "rizatriptan", "sumatriptan", "lamotrigine", "rizact", "lamitor", "migraine", "seizure", "epilepsy"],
+    pillName: "Rizatriptan/Lamotrigine (Check Label)",
+    genericName: "Rizatriptan or Sumatriptan (Migraine) / Lamotrigine (Seizures/Mood)",
+    drugClass: "Triptan (Migraine) or Anticonvulsant/Mood Stabilizer",
+    size: "Medium (10mm)",
+    shape: "Shield/Triangular White Tablet",
+    manufacturer: "Various (Rizact, Lamitor, etc.)",
+    dosage: "Varies - Check packaging",
+    description: "White shield or triangular-shaped tablets. Could be: (1) TRIPTAN (Rizact/Sumatriptan) - stops migraine headache that has already started, relieves pain, nausea, light sensitivity. OR (2) LAMOTRIGINE (Lamitor) - prevents seizures (epilepsy) or stabilizes mood in bipolar disorder. CHECK THE LABEL on the back to identify.",
+    warnings: ["CHECK THE LABEL: These drugs do opposite things - one stops headaches, one prevents seizures", "HEART RISK (if Triptan): Constricts blood vessels - NOT for people with heart disease or high blood pressure", "SKIN RASH (if Lamotrigine): Can cause rare but severe Stevens-Johnson Syndrome - stop immediately if rash develops", "Prescription required for both medications"]
   }
 ];
 
@@ -162,7 +174,7 @@ Deno.serve(async (req) => {
             ${JSON.stringify(pillDatabase.map(p => ({ name: p.pillName, keywords: p.keywords })))}
             
             Respond with a JSON object containing:
-            - matchedPillIndex: the index (0-9) of the matched pill, or -1 if no match
+            - matchedPillIndex: the index (0-10) of the matched pill, or -1 if no match
             - confidence: a percentage between 75-99 indicating match confidence
             - reasoning: brief explanation of why this pill was matched
             
@@ -184,7 +196,7 @@ Deno.serve(async (req) => {
                 properties: {
                   matchedPillIndex: { 
                     type: "number",
-                    description: "Index of matched pill (0-9) or -1 if no match"
+                    description: "Index of matched pill (0-10) or -1 if no match"
                   },
                   confidence: { 
                     type: "number",
